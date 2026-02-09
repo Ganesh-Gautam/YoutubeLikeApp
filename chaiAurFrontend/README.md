@@ -1,16 +1,137 @@
-# React + Vite
+# Phased Development Plan 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Incremental Working Releases
 
-Currently, two official plugins are available:
+Each phase delivers a **fully functional app** with specific features. 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+##   PHASE 1: Authentication & Basic Shell  
+**Goal:** Users can register, login, and see an empty shell
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Features:
+-  User registration with avatar upload
+-  User login/logout
+-  Protected routes
+-  Header with user menu
+-  Sidebar navigation
+-  Empty home page (placeholder)
+-  User profile display in header
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## PHASE 2: Video Upload & Display  
+**Goal:** Users can upload videos and see them on home page
+
+### Features:
+-  Video upload with thumbnail
+-  Home page displays all videos
+-  Video cards with thumbnail, title, views, date
+-  Basic video player
+-  Video watch page
+
+---
+
+##  PHASE 3: User Channels 
+**Goal:** Users have channels where their videos are displayed
+
+### Features:
+-  Public channel pages
+-  Channel header with banner & avatar
+-  Channel videos tab
+-  My channel page (private view)
+-  Edit channel details
+-  Update avatar/cover image
+
+---
+
+##  PHASE 4: Comments & Engagement 
+**Goal:** Users can comment on videos and engage with content
+
+### Features:
+-  Add comments to videos
+-  Reply to comments (optional)
+-  Edit/delete own comments
+-  Like/dislike videos
+-  Like comments
+-  Comment count display
+
+---
+
+## PHASE 5: Subscriptions 
+**Goal:** Users can subscribe to channels and see subscribed content
+
+### Features:
+-  Subscribe/unsubscribe to channels
+-  Subscriber count display
+-  Subscriptions page (feed from subscribed channels)
+-  Subscription button on channels
+-  "Subscribed" channels list
+
+---
+
+## PHASE 6: Playlists
+**Goal:** Users can create and manage playlists
+
+### Features:
+-  Create playlists
+-  Add videos to playlists
+-  Remove videos from playlists
+-  View playlist
+-  Play playlist
+-  Edit/delete playlists
+
+---
+
+##  PHASE 7: Search & Discovery 
+**Goal:** Users can search and discover content
+
+### Features:
+-  Search videos by title/description
+-  Filter videos by date, views, etc.
+-  Trending page
+-  Search suggestions
+-  Recent searches
+
+---
+
+##  PHASE 8: User History & Liked Videos 
+**Goal:** Track user activity and preferences
+
+### Features:
+-  Watch history
+-  Liked videos page
+-  Clear history
+-  Remove from liked videos
+
+
+---
+
+## PHASE 9: Polish & Performance 
+**Goal:** Production-ready app with optimizations
+
+### Features:
+-  Infinite scroll on all feeds
+-  Loading skeletons
+-  Error boundaries
+-  Optimistic UI updates
+-  Image lazy loading
+-  Video thumbnail generation
+-  Responsive design refinement
+
+---
+
+## PHASE 10: Advanced Features (Optional)
+
+### Features :
+-  Community posts/tweets
+-  Channel analytics dashboard
+-  Video categories/tags
+-  Notifications
+-  Dark/light theme toggle
+-  Video quality selector
+-  Keyboard shortcuts
+-  Share video functionality
+-  Embed video player
+
+---
