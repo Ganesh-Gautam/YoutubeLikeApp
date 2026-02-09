@@ -1,0 +1,108 @@
+import mongoose from "mongoose"
+import {Video} from "../models/video.model.js" 
+import ApiError from "../utils/ApiError.js"
+import { ApiResponse } from "../utils/ApiResponse.js"
+import { asyncHandler } from "../utils/asyncHandler.js"
+import { User } from "../models/user.model.js"
+
+const getChannelStats = asyncHandler(async(req, res)=>{
+    const {channelName}= req.params;
+        
+    if(!channelName?.trim()){
+        throw new ApiError(400,"User Name/Email is missing")
+    }
+    const channel = await User.findOne({
+        $or: [{ userName: channelName }, { email: channelName }]
+    });
+
+    const stats = await Video.aggregate([
+        {
+            $match : {
+                owner : new mongoose.Types.ObjectId(channel._id)
+            }
+        },{
+            $lookup : {
+                from : "likes",
+                localField : "_id",
+                foreignField : "video",
+                as :  "likes"
+            }
+        },{
+            $lookup : {
+                from : "comments",
+                localField: "_id",
+                foreignField : "video",
+                as : "comments"
+            }
+        },{
+            $group : {
+                _id : null,
+                totalVideos : {$sum : 1},
+                totalViews : {$sum : "$views"},
+                totalLikes : {$sum : {$size : "$likes"}},
+                totalComments : {$sum : {$size : "$comments"}}
+            }
+        }
+    ])
+
+    const channelStats = stats[0] || {
+        totalVideos: 0,
+        totalViews: 0,
+        totalLikes: 0,
+        totalComments: 0
+    };
+
+    return res.status(200).json(
+        new ApiResponse(200, channelStats, "Channel stats fetched successfully")
+    );
+
+})
+
+const getChannelVideos = asyncHandler(async(req,res)=>{
+    const {channelName}= req.params;
+    const {page=1, limit =10}=req.query;
+        
+    if(!channelName?.trim()){
+        throw new ApiError(400,"Channel Name/Email is missing")
+    }
+    const channel = await User.findOne({
+        $or: [{ userName: channelName }, { email: channelName }]
+    });
+
+    const options = {
+        page : Number(page),
+        limit : Number(limit),
+        sort : {created :-1}
+    };
+
+    const videos = await Video.aggregatePaginate(
+        Video.aggregate([
+            {
+                $match : {
+                    owner : new mongoose.Types.ObjectId(channel._id),
+                    isPublished : true
+                }
+            },{
+                $project : {
+                    videoFile : 1 ,
+                    thumbnail : 1,
+                    title : 1,
+                    description : 1,
+                    duration : 1,
+                    views : 1,
+                    createdAt : 1
+                }
+            }
+        ]),
+        options
+    );
+
+    return res.status(200).json(
+        new ApiResponse(200,videos,"Channel videos fetched successfully")
+    )
+
+})
+
+export {
+    getChannelStats ,getChannelVideos
+}
