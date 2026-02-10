@@ -6,7 +6,7 @@ const login = createAsyncThunk("auth/login", async(data)=>{
 })
 
 const register = createAsyncThunk("auth/register", async(data)=>{
-    return registerUser(data);
+    return await registerUser(data);
 })
 
 const logout = createAsyncThunk("auth/logout", async () => {

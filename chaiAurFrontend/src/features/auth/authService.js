@@ -1,15 +1,13 @@
-import axios from "../../api/axios.config";
+import axios from "../../api/axios.js";
 
 const registerUser = async(data )=>{
-    const res = await axios.post("/users/register" ,data , {
-        headers : {"Content-Type" : "multipart/form-data"}
-    });
-    return res.data
+    const res = await axios.post("/users/register" ,data );
+    return res.data;
 }
 
 const loginUser = async(data )=>{
- const res = await axios.post("/user/login",data);
- return res.data;
+    const res = await axios.post("/users/login",data);
+    return res.data;
 }
 const logoutUser = async()=>{
     const res = await axios.post("/users/logout");
