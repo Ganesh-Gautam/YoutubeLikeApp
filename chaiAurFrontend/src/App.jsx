@@ -1,34 +1,20 @@
-import { BrowserRouter ,Routes , Route } from 'react-router-dom';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import ProtectedRoute from './components/auth/ProtectedRoute';
-import MainLayout from './layouts/MainLayout';
-import './App.css';
+import { Outlet } from "react-router-dom";
+import Header from "./components/common/Header.jsx";
+import Sidebar from "./components/common/Sidebar.jsx";
+import './App.css'; 
 
-
-function App() { 
-
+const App = () => { 
   return (
-      <BrowserRouter>
-        <Routes>
-          <Route 
-            path ="/"
-            element= {
-              <ProtectedRoute>
-                <MainLayout>
-                  <Home/>
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          />
+    <div className="app-layout">
+      <Header />
+      <div style={{ display: "flex" }}>
+        <Sidebar />
+        <main style={{ flex: 1, padding: "20px" }}>
+          <Outlet />
+        </main>
+      </div>
+    </div>
+  );
+};
 
-          <Route path = "/login" element = {<Login/>} />
-          <Route path="/register" element ={<Register/>} />
-        </Routes>
-        
-      </BrowserRouter>
-  )
-}
-
-export default App
+export default App;
