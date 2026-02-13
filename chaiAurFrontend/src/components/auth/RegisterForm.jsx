@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useAppDispatch } from "../../app/hooks";
+import { useDispatch  } from "react-redux";
 import { register } from "../../features/auth/authSlice";
 import toast from "react-hot-toast";
 
 const RegisterForm = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch ();
 
   const [form, setForm] = useState({
     fullName: "",

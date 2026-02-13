@@ -8,7 +8,8 @@ import {upload} from "../middlewares/multer.middleware.js"
 const router =Router();
 router.use(verifyJWT);
 
-router.route("/").get(getAllVideos).post(upload.fields([
+router.route("/").get(getAllVideos)
+router.route("/upload").post(upload.fields([
     {name: "videoFile",maxCount: 1},
     {name: "thumbnail",maxCount:1}
 ]),publishAVideo)

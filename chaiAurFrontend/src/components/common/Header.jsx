@@ -1,9 +1,9 @@
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useDispatch , useSelector } from "react-redux";
 import { logout } from "../../features/auth/authSlice";
 
 export default function Header() {
-    const { user } = useAppSelector((state) => state.auth);
-    const dispatch = useAppDispatch();
+    const { user } = useSelector((state) => state.auth);
+    const dispatch = useDispatch ();
 
     return (
         <header className="flex justify-between items-center p-4 shadow">

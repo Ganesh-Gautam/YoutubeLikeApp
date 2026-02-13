@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useAppDispatch } from "../../app/hooks";
+import { useDispatch } from "react-redux";
 import { login } from "../../features/auth/authSlice.js";
 
 export default function LoginForm() {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch ();
   const [form, setForm] = useState({ email: "", password: "" });
 
   const handleSubmit = (e) => {

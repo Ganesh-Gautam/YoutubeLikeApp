@@ -69,8 +69,18 @@ Each phase delivers a **fully functional app** with specific features.
 -  "Subscribed" channels list
 
 ---
+# PHASE 6: Community Posts (Tweets Layer) 
+### Features:
+- Create community post/tweet (text)
+- Channel community tab
+- Like posts
+- Comment on posts
+- Subscribers-only feed (optional)
+- Edit/delete own posts 
 
-## PHASE 6: Playlists
+--- 
+
+## PHASE 7: Playlists
 **Goal:** Users can create and manage playlists
 
 ### Features:
@@ -83,7 +93,7 @@ Each phase delivers a **fully functional app** with specific features.
 
 ---
 
-##  PHASE 7: Search & Discovery 
+##  PHASE 8: Search & Discovery 
 **Goal:** Users can search and discover content
 
 ### Features:
@@ -95,7 +105,7 @@ Each phase delivers a **fully functional app** with specific features.
 
 ---
 
-##  PHASE 8: User History & Liked Videos 
+##  PHASE 9: User History & Liked Videos 
 **Goal:** Track user activity and preferences
 
 ### Features:
@@ -107,7 +117,7 @@ Each phase delivers a **fully functional app** with specific features.
 
 ---
 
-## PHASE 9: Polish & Performance 
+## PHASE 10: Polish & Performance 
 **Goal:** Production-ready app with optimizations
 
 ### Features:
@@ -121,10 +131,9 @@ Each phase delivers a **fully functional app** with specific features.
 
 ---
 
-## PHASE 10: Advanced Features (Optional)
+## PHASE 11: Advanced Features (Optional)
 
-### Features :
--  Community posts/tweets
+### Features : 
 -  Channel analytics dashboard
 -  Video categories/tags
 -  Notifications

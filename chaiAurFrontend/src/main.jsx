@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from "react-redux";
-import { store } from "./app/store";
+import { store } from "./store/store.js";
 import AuthLayout from './layouts/AuthLayout.jsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
@@ -9,7 +9,10 @@ import './index.css'
 import App from './App.jsx'
 import Home from './pages/Home.jsx'
 import Login from './pages/Login.jsx';
-import Register from './pages/Register.jsx'
+import Register from './pages/Register.jsx';
+import WatchVideo from './pages/WatchVideo.jsx';
+import UploadVideo from './pages/UploadVideo.jsx';
+
 
 const router = createBrowserRouter([
   {
@@ -35,6 +38,18 @@ const router = createBrowserRouter([
             <Register />
           </AuthLayout>
         ),
+      },
+      {
+        path : "watch/:videoId",
+        element :<WatchVideo/>
+      },
+      {
+        path : "/upload",
+        element : ( 
+          <AuthLayout authentication={true}>
+            <UploadVideo/> 
+          </AuthLayout>
+        )
       }
 
     ]
