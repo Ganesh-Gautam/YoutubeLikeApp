@@ -8,7 +8,7 @@ const formatDuration = (duration) => {
   return `${minutes}:${seconds.toString().padStart(2, "0")}`; 
 };
 
-export default function VideoCard({ video }) {
+export default function ChannelVideoCard({ video }) {
   return (
     <div>
       <Link to={`/watch/${video._id}`}>
@@ -24,15 +24,7 @@ export default function VideoCard({ video }) {
       </Link>
 
       <div className="flex gap-3 mt-3">
-        {/* Channel Avatar */}
-        <Link to={`/channel/${video.owner?.userName}`}>
-          <img
-            src={video.owner?.avatar}
-            alt="channel"
-            className="w-10 h-10 rounded-full"
-          />
-        </Link>
-
+       
         <div>
           <Link to={`/watch/${video._id}`}>
             <h3 className="font-semibold line-clamp-2">
@@ -40,13 +32,7 @@ export default function VideoCard({ video }) {
             </h3>
           </Link>
 
-          <Link
-            to={`/channel/${video.owner?.userName}`}
-            className="text-sm text-gray-500 hover:text-black"
-          >
-            {video.owner?.userName}
-          </Link>
-
+        
           <p className="text-sm text-gray-500">
             {video.views} views •{" "}
             {formatDistanceToNow(new Date(video.createdAt), {

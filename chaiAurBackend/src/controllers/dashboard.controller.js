@@ -5,45 +5,53 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 import { asyncHandler } from "../utils/asyncHandler.js"
 import { User } from "../models/user.model.js"
 
-const getChannelStats = asyncHandler(async(req, res)=>{
-    const {channelName}= req.params;
-        
-    if(!channelName?.trim()){
-        throw new ApiError(400,"User Name/Email is missing")
+const getChannelStats = asyncHandler(async (req, res) => {
+    const { channelName } = req.params;
+
+    if (!channelName?.trim()) {
+        throw new ApiError(400, "Channel name is missing");
     }
+
     const channel = await User.findOne({
         $or: [{ userName: channelName }, { email: channelName }]
-    });
+    }).select("userName avatar coverImage");
+
+    if (!channel) {
+        throw new ApiError(404, "Channel not found");
+    }
 
     const stats = await Video.aggregate([
         {
-            $match : {
-                owner : new mongoose.Types.ObjectId(channel._id)
+            $match: {
+                owner: new mongoose.Types.ObjectId(channel._id)
             }
-        },{
-            $lookup : {
-                from : "likes",
-                localField : "_id",
-                foreignField : "video",
-                as :  "likes"
-            }
-        },{
-            $lookup : {
-                from : "comments",
+        },
+        {
+            $lookup: {
+                from: "likes",
                 localField: "_id",
-                foreignField : "video",
-                as : "comments"
+                foreignField: "video",
+                as: "likes"
             }
-        },{
-            $group : {
-                _id : null,
-                totalVideos : {$sum : 1},
-                totalViews : {$sum : "$views"},
-                totalLikes : {$sum : {$size : "$likes"}},
-                totalComments : {$sum : {$size : "$comments"}}
+        },
+        {
+            $lookup: {
+                from: "comments",
+                localField: "_id",
+                foreignField: "video",
+                as: "comments"
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                totalVideos: { $sum: 1 },
+                totalViews: { $sum: "$views" },
+                totalLikes: { $sum: { $size: "$likes" } },
+                totalComments: { $sum: { $size: "$comments" } }
             }
         }
-    ])
+    ]);
 
     const channelStats = stats[0] || {
         totalVideos: 0,
@@ -53,10 +61,15 @@ const getChannelStats = asyncHandler(async(req, res)=>{
     };
 
     return res.status(200).json(
-        new ApiResponse(200, channelStats, "Channel stats fetched successfully")
+        new ApiResponse(200, {
+            ...channelStats,
+            userName: channel.userName,
+            avatar: channel.avatar,
+            coverImage: channel.coverImage
+        }, "Channel stats fetched successfully")
     );
+});
 
-})
 
 const getChannelVideos = asyncHandler(async(req,res)=>{
     const {channelName}= req.params;
@@ -72,7 +85,7 @@ const getChannelVideos = asyncHandler(async(req,res)=>{
     const options = {
         page : Number(page),
         limit : Number(limit),
-        sort : {created :-1}
+        sort : {createdAt :-1}
     };
 
     const videos = await Video.aggregatePaginate(

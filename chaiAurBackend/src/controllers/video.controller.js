@@ -1,6 +1,5 @@
 import mongoose, {isValidObjectId} from "mongoose";
 import { Video } from "../models/video.model.js";
-import { User } from "../models/user.model.js";
 import ApiError from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -52,7 +51,8 @@ const publishAVideo=asyncHandler(async (req, res)=>{
 
 const getVideoById = asyncHandler(async(req, res)=>{
     const {videoId}= req.params;
-    const video =await Video.findById(videoId);
+    const video= await Video.findById(videoId)
+        .populate("owner", "userName avatar");
 
     if(!video){
         throw new ApiError(404, "Video not found")

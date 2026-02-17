@@ -16,7 +16,7 @@ const Home = () => {
   return (
     <div>
       <Link to="/upload">
-        <button className="w-full hover:bg-red-500  bg-blue-500 text-white p-2" >Button</button>
+        <button className="w-full hover:bg-amber-300 bg-blue-300 text-white p-2" >Add Video</button>
       </Link>
       {
         isLoading

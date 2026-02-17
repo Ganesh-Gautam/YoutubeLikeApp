@@ -62,7 +62,7 @@ const getPlaylistById = asyncHandler(async(req, res)=>{
 
     const playlist = await Playlist.findById(playlistId)
         .populate("videos")
-        .populate("owner","username avatar");
+        .populate("owner","userName avatar");
 
     if(!playlist){
         throw new ApiError(404, "Playlist not found");

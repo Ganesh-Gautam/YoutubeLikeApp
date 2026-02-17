@@ -13,6 +13,8 @@ import Register from './pages/Register.jsx';
 import WatchVideo from './pages/WatchVideo.jsx';
 import UploadVideo from './pages/UploadVideo.jsx';
 
+import Channel from './pages/Channel.jsx'; 
+import EditChannel from './pages/EditChannel.jsx';
 
 const router = createBrowserRouter([
   {
@@ -48,6 +50,19 @@ const router = createBrowserRouter([
         element : ( 
           <AuthLayout authentication={true}>
             <UploadVideo/> 
+          </AuthLayout>
+        )
+      },
+      {
+        path : "/channel/:channelName",
+        element : (
+          <Channel/>
+        )
+      },{
+        path : "channel/:channelName/edit",
+        element :(
+          <AuthLayout>
+            <EditChannel/>
           </AuthLayout>
         )
       }
