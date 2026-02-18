@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import {useParams} from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux"; 
 import { FiEdit } from "react-icons/fi";
 import channelService from "../features/channel/channelService.js";
 import ChannelVideoCard from "../components/ChannelVideoCard.jsx";
+import { Link } from "react-router-dom";
 
 export default function Channel() {
   const { channelName } = useParams(); 
@@ -13,8 +13,7 @@ export default function Channel() {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const { user } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth); 
 
   const isOwner =
   user.user?.userName?.trim().toLowerCase() ===
@@ -72,12 +71,13 @@ export default function Channel() {
           </div>
         </div>
         {isOwner && (
-          <button
-            onClick={() => navigate(`/channel/${channelName}/edit`)}
-            className="absolute top-4 right-6 bg-yellow p-2 rounded-full shadow-md hover:bg-gray-100"
-          >
-            <FiEdit size={20} />
-          </button>
+          <Link to={`/channel/${channelName}/edit`}>
+            <button 
+              className="absolute top-4 right-6 bg-yellow p-2 rounded-full shadow-md hover:bg-gray-100"
+            >
+              <FiEdit size={20} />
+            </button>
+          </Link>
         )}
       </div>
 

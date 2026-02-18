@@ -12,13 +12,54 @@ const getChannelVideos = async (channelName, params) => {
   return res.data.data;
 };
 
-const updateChannel = async (formData) => {
-  const res = await axios.patch(`/users/update-channel`, formData);
+const updateAccountDetails = async (data) => {
+  const res = await axios.patch(
+    "/users/update-account",
+    data,
+    { withCredentials: true }
+  );
   return res.data.data;
 };
+
+const updateAvatar = async (formData) => {
+  const res = await axios.patch(
+    "/users/avatar",
+    formData,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+      withCredentials: true
+    }
+  );
+  return res.data.data;
+};
+
+const updateCoverImage = async (formData) => {
+  const res = await axios.patch(
+    "/users/coverImage",
+    formData,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+      withCredentials: true
+    }
+  );
+  return res.data.data;
+};
+
+const changePassword = async (data) => {
+  const res = await axios.post(
+    "/users/change-password",
+    data,
+    { withCredentials: true }
+  );
+  return res.data.data;
+};
+
 
 export default {
   getChannelStats,
   getChannelVideos,
-  updateChannel,
+  updateAccountDetails,
+  updateAvatar,
+  updateCoverImage,
+  changePassword
 };
