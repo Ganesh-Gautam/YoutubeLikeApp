@@ -1,13 +1,15 @@
-import { useEffect } from "react";
-import { useParams ,useNavigate } from "react-router-dom";
+import { useEffect} from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchVideoById } from "../features/video/videoSlice";
+import { toggleVideoLike } from "../features/like/likeService";
 
 export default function WatchVideo() {
   const { videoId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentVideo } = useSelector((state) => state.video);
+
 
   useEffect(() => {
     dispatch(fetchVideoById(videoId));
@@ -49,8 +51,11 @@ export default function WatchVideo() {
         </div>
       </div>
 
+      <button onClick={() => dispatch(toggleVideoLike(currentVideo._id))}>
+        {currentVideo?.isLiked ? "❤️" : "🤍"} {currentVideo?.likeCount}
+      </button>
 
-      <p className="text-gray-500">
+      <p className="text-gray-500 mt-2">
         {currentVideo.views} views
       </p>
 

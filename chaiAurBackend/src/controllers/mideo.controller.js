@@ -51,7 +51,6 @@ const publishAVideo=asyncHandler(async (req, res)=>{
 
 const getVideoById = asyncHandler(async (req, res) => {
     const { videoId } = req.params;
-    console.log("ji")
 
     if (!mongoose.Types.ObjectId.isValid(videoId)) {
         throw new ApiError(400, "Invalid video id");
@@ -59,60 +58,58 @@ const getVideoById = asyncHandler(async (req, res) => {
     const userId = req.user?._id;
 
     const pipeline = [
-    {
-        $match: { _id: new mongoose.Types.ObjectId(videoId) }
-    },
-    {
-        $lookup: {
-        from: "users",
-        localField: "owner",
-        foreignField: "_id",
-        as: "owner",
-        pipeline: [
-            { $project: { userName: 1, avatar: 1 } }
-        ]
-        }
-    },
-    { $unwind: "$owner" },
-    {
-        $lookup: {
-        from: "likes",
-        localField: "_id",
-        foreignField: "video",
-        as: "likes"
-        }
-    },
-    {
-        $addFields: {
-        likeCount: { $size: "$likes" },
-        isLiked: {
-            $anyElementTrue: {
-            $map: {
-                input: "$likes",
-                as: "like",
-                in: { $eq: ["$$like.likedBy", userId] }
+        {
+            $match: {
+                _id: new mongoose.Types.ObjectId(videoId)
             }
+        },
+        {
+            $lookup: {
+                from: "users",
+                localField: "owner",
+                foreignField: "_id",
+                as: "owner",
+                pipeline: [
+                    { $project: { userName: 1, avatar: 1 } }
+                ]
             }
+        },
+        { $unwind: "$owner" },
+        {
+        $facet: {
+            likesCount: [
+            { $lookup: {
+                from: "likes",
+                localField: "_id",
+                foreignField: "video",
+                pipeline: [ { $count: "total" } ],
+                as: "likesCount"
+                }
+            },
+            { $addFields: { likeCount: { $ifNull: [{ $first: "$likesCount.total" }, 0] } } }
+            ],
+            userLikes: [
+            { $lookup: {
+                from: "likes",
+                let: { vid: "$_id", uid: userId },
+                pipeline: [
+                    { $match: { $expr: { $and: [
+                    { $eq: ["$video", "$$vid"] },
+                    { $eq: ["$likedBy", "$$uid"] }
+                    ] } } }
+                ],
+                as: "userLikes"
+                }
+            },
+            { $addFields: { isLiked: { $gt: [{ $size: "$userLikes" }, 0] } } }
+            ]
         }
-        }
-    },
-    {
-        $project: {
-        likes: 0, 
-        likeCount: 1,
-        isLiked: 1,   
-        videoFile: 1,
-        thumbnail: 1,
-        title: 1,
-        description: 1,
-        duration: 1,
-        views: 1,
-        isPublished: 1,
-        owner: 1,
-        createdAt: 1,
-        updatedAt: 1
-        }
-    }
+        },
+        { $unwind: "$likesCount" },
+        { $unwind: "$userLikes" },
+        { $project: { likesCount: 0, userLikes: 0, /* rest as before */ } }
+
+
     ];
 
     const video = await Video.aggregate(pipeline);
@@ -120,10 +117,9 @@ const getVideoById = asyncHandler(async (req, res) => {
     if (!video.length) {
         throw new ApiError(404, "Video not found");
     }
-    console.log(video[0])
 
-    res.status(201).json(
-        new ApiResponse(201, video[0], "Video fetched successfully")
+    return res.status(201).json(
+        new ApiResponse(201, video[0], "Video fetched successfully kyu")
     );
 });
 
@@ -213,7 +209,7 @@ const updateVideo = asyncHandler(async (req, res)=>{
     await video.save();
 
     return res.status(200).json(
-        new ApiResponse(200, video, "Video updated successfully")
+        new ApiResponse(200, video, "Video updated kese successfully")
     );
 })
 

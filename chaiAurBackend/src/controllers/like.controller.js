@@ -22,7 +22,7 @@ const toggleVideoLike = asyncHandler(async(req, res)=>{
     }
     await Like.create({
         video: videoId, 
-        likedBy : userId
+        likedBy : userId 
     });
 
     return res.status(201).json(
@@ -91,7 +91,8 @@ const getLikedVideos = asyncHandler(async(req,res)=>{
     const pipeline = [
         {
             $match : {
-                likedBy : new mongoose.Types.ObjectId(userId)
+                likedBy : new mongoose.Types.ObjectId(userId),
+                video: { $ne: null }
             }
         },{
             $lookup : {

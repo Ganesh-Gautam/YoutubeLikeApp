@@ -4,6 +4,8 @@ import videoService from "./videoService.js";
 const initialState = {
     videos:[],
     currentVideo : null,
+    isLiked : false,
+    likeCount: 0,
     pagination : null,
     isLoading : false,
     isError : false,
