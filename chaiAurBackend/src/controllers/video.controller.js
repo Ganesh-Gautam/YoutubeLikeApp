@@ -50,8 +50,7 @@ const publishAVideo=asyncHandler(async (req, res)=>{
 })
 
 const getVideoById = asyncHandler(async (req, res) => {
-    const { videoId } = req.params;
-    console.log("ji")
+    const { videoId } = req.params; 
 
     if (!mongoose.Types.ObjectId.isValid(videoId)) {
         throw new ApiError(400, "Invalid video id");
@@ -98,19 +97,7 @@ const getVideoById = asyncHandler(async (req, res) => {
     },
     {
         $project: {
-        likes: 0, 
-        likeCount: 1,
-        isLiked: 1,   
-        videoFile: 1,
-        thumbnail: 1,
-        title: 1,
-        description: 1,
-        duration: 1,
-        views: 1,
-        isPublished: 1,
-        owner: 1,
-        createdAt: 1,
-        updatedAt: 1
+        likes: 0    
         }
     }
     ];
@@ -120,9 +107,8 @@ const getVideoById = asyncHandler(async (req, res) => {
     if (!video.length) {
         throw new ApiError(404, "Video not found");
     }
-    console.log(video[0])
 
-    res.status(201).json(
+    return res.status(201).json(
         new ApiResponse(201, video[0], "Video fetched successfully")
     );
 });

@@ -1,5 +1,6 @@
 import axios from "../../api/axios";
 
-export const toggleVideoLike = (videoId) => {
-  return axios.post(`/likes/toggle/v/${videoId}`);
+export const ServiceToggleVideoLike = async (videoId) => {
+  const res = await axios.post(`/likes/toggle/v/${videoId}`); 
+  return res.data.data
 };

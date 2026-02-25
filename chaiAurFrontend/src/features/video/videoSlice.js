@@ -1,5 +1,6 @@
 import { createSlice , createAsyncThunk } from "@reduxjs/toolkit";
 import videoService from "./videoService.js";
+import { ServiceToggleVideoLike } from "../like/likeService.js";
 
 const initialState = {
     videos:[],
@@ -31,6 +32,16 @@ export const fetchVideoById = createAsyncThunk(
         return thunkAPI.rejectWithValue(error.response?.data?.message);
         }
     }
+);
+export const toggleVideoLike = createAsyncThunk( 
+    "video/toggleLike", 
+    async (videoId, thunkAPI) => { 
+        try { 
+            return await ServiceToggleVideoLike(videoId); 
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response?.data?.message); 
+        } 
+    } 
 );
 
 export const uploadVideo = createAsyncThunk(
@@ -66,7 +77,13 @@ const videoSlice = createSlice({
         .addCase(fetchVideoById.fulfilled, (state, action) => {
             state.currentVideo = action.payload;
         })
-
+        .addCase(toggleVideoLike.fulfilled, (state, action) => {
+            state.isLoading = false;
+            if (state.currentVideo) {
+                state.currentVideo.isLiked = action.payload.liked;
+                state.currentVideo.likeCount  += action.payload.liked ? 1 : -1;
+            }
+        })
         .addCase(uploadVideo.fulfilled, (state, action) => {
             state.videos.unshift(action.payload);
         });
