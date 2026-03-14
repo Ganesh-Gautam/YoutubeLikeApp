@@ -32,7 +32,7 @@ const toggleVideoLike = asyncHandler(async(req, res)=>{
 })
 
 const toggleCommentLike = asyncHandler(async(req,res)=>{
-    const {commentId} =req.params 
+    const {commentId} = req.params 
     const userId = req.user._id;
 
     const existingLike = await Like.findOne({
@@ -40,24 +40,28 @@ const toggleCommentLike = asyncHandler(async(req,res)=>{
         likedBy : userId
     });
 
+    let isLiked;
     if(existingLike) {
         await existingLike.deleteOne();
-
-        return res.status(200).json(
-            new ApiResponse(200,  { liked : false}, "Comment unliked")
-        );
+        isLiked = false;
+    } else {
+        await Like.create({
+            comment : commentId, 
+            likedBy : userId
+        });
+        isLiked = true;
     }
-    await Like.create({
-        comment : commentId, 
-        likedBy : userId
-    });
 
-    return res.status(201).json(
-        new ApiResponse(201, {liked : true}, "Comment liked")
+    // Always get fresh count from database
+    const likeCount = await Like.countDocuments({ comment: commentId });
+
+    return res.status(200).json(
+        new ApiResponse(200, { 
+            isLiked, 
+            likeCount 
+        }, isLiked ? "Comment liked" : "Comment unliked")
     );
-
-
-})
+});
 
 const toggleTweetLike = asyncHandler(async(req,res)=>{
     const {tweetId} = req.params 

@@ -38,7 +38,6 @@ export default function Channel() {
 
   return (
     <div>
-      {/* Channel Header */}
       <div className="relative">
         {stats.coverImage ? (
           <img
@@ -80,7 +79,6 @@ export default function Channel() {
           </Link>
         )}
       </div>
-
       {/* Videos Grid */}
       <div className="grid grid-cols-3 gap-6 p-6">
         {videos.map((video) => (

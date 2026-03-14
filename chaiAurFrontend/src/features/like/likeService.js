@@ -4,3 +4,8 @@ export const ServiceToggleVideoLike = async (videoId) => {
   const res = await axios.post(`/likes/toggle/v/${videoId}`); 
   return res.data.data
 };
+export const ServiceToggleCommentLike = (commentId) => {
+  const res = axios.post(`/likes/toggle/c/${commentId}`);
+  console.log(res.data.data)
+  return res.data.data
+};

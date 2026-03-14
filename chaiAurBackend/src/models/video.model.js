@@ -33,6 +33,10 @@ const videoSchema = new Schema(
         owner: {
             type: Schema.Types.ObjectId,
             ref: "User"
+        },
+        commentCount : {
+            type: Number, 
+            default : 0
         }
     },
     {timestamps: true}

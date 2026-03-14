@@ -2,6 +2,7 @@ import { useEffect} from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchVideoById , toggleVideoLike} from "../features/video/videoSlice";
+import CommentSection from "../components/CommentSection.jsx";
 
 export default function WatchVideo() {
   const { videoId } = useParams();
@@ -11,7 +12,7 @@ export default function WatchVideo() {
 
 
   useEffect(() => {
-    dispatch(fetchVideoById(videoId));
+    dispatch(fetchVideoById(videoId)); 
   }, [dispatch, videoId]);
 
   if (!currentVideo) return <p>Loading...</p>;
@@ -52,7 +53,7 @@ export default function WatchVideo() {
 
       <button onClick={() => dispatch(toggleVideoLike(currentVideo._id))}>
         {currentVideo?.isLiked ? "❤️" : "🤍"} {" "}
-        {currentVideo?.likeCount}
+        {currentVideo?.likeCount || 0}
       </button>
 
       <p className="text-gray-500 mt-2">
@@ -60,6 +61,8 @@ export default function WatchVideo() {
       </p>
 
       <p className="mt-3">{currentVideo.description}</p>
+
+      <CommentSection videoId={videoId} />
     </div>
   );
 }
